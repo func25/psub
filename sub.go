@@ -82,6 +82,7 @@ func (c *PsubClient) subscribe(ctx context.Context, subscriber *Subscriber, fn M
 		ackErr = *subscriber.cfg.ACKErr
 	}
 	for ok := true; ok; {
+		c.Log("[PSUB-debug] start pulling", id)
 		err = subscriber.Sub.Receive(ctx, func(ctx context.Context, msg *pubsub.Message) {
 			err := fn(ctx, msg)
 
@@ -96,6 +97,7 @@ func (c *PsubClient) subscribe(ctx context.Context, subscriber *Subscriber, fn M
 			}
 		})
 
+		c.Log("[PSUB-debug] error while pulling message of", id, " - ", err)
 		ok = retry
 		time.Sleep(1 * time.Second)
 	}

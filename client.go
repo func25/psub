@@ -24,7 +24,7 @@ type Subscriber struct {
 	cfg        *SubscribeOption
 }
 
-var Client PsubClient
+var Client *PsubClient
 
 func Connect(ctx context.Context, projectID string, opts ...option.ClientOption) (*PsubClient, error) {
 	var err error
@@ -33,12 +33,22 @@ func Connect(ctx context.Context, projectID string, opts ...option.ClientOption)
 		return nil, err
 	}
 
-	return &PsubClient{Client: c}, nil
+	if Client == nil {
+		Client = &PsubClient{Client: c}
+	}
+
+	return &PsubClient{
+		Client:       c,
+		_subscribers: make(map[string]*Subscriber),
+		topics:       make(map[string]*pubsub.Topic),
+	}, nil
 }
 
 func ForceClient(client *pubsub.Client) *PsubClient {
 	return &PsubClient{
-		Client: client,
+		Client:       client,
+		_subscribers: make(map[string]*Subscriber),
+		topics:       make(map[string]*pubsub.Topic),
 	}
 }
 
