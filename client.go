@@ -45,11 +45,15 @@ func Connect(ctx context.Context, projectID string, opts ...option.ClientOption)
 }
 
 func ForceClient(client *pubsub.Client) *PsubClient {
-	return &PsubClient{
+	newClient := &PsubClient{
 		Client:       client,
 		_subscribers: make(map[string]*Subscriber),
 		topics:       make(map[string]*pubsub.Topic),
 	}
+	if Client == nil {
+		Client = newClient
+	}
+	return newClient
 }
 
 func (c *PsubClient) SetLog(isLog bool) {
