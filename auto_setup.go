@@ -108,7 +108,7 @@ func (c *PsubClient) Upsert(ctx context.Context, cmd UpsertCmd) error {
 	}
 
 	return c.UpsertSubscriptions(ctx, SubsInfo{
-		DefaultConfig: NewBoiler(c.Client).SubscriptionConfig(topic.ID()),
+		DefaultConfig: NewBoiler(c.Client).SubConfig(topic.ID()),
 		Subs:          upsertSubs,
 	})
 }
