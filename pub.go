@@ -84,6 +84,7 @@ func (c *PsubClient) Publish(ctx context.Context, topicID string, message Messag
 	result := topic.Publish(ctx, message.Message)
 	_, err := result.Get(ctx)
 	if err != nil {
+		c.Log("[PSUB-debug] Publish topic", topicID, "failed:", err)
 		return err
 	}
 

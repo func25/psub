@@ -6,18 +6,26 @@ import (
 	"cloud.google.com/go/pubsub"
 )
 
-type Boilerplate struct{}
+type Boilerplate struct {
+	SubConfig pubsub.SubscriptionConfig
+}
 
-func (Boilerplate) SubscriptionConfig(topic *pubsub.Topic) pubsub.SubscriptionConfig {
-	return pubsub.SubscriptionConfig{
-		Topic: topic,
-		RetryPolicy: &pubsub.RetryPolicy{
-			MinimumBackoff: 1 * time.Second,
-			MaximumBackoff: 30 * time.Second,
-		},
-	}
+func (b Boilerplate) SubscriptionConfig(topic *pubsub.Topic) pubsub.SubscriptionConfig {
+	subCfg := b.SubConfig
+	subCfg.Topic = topic
+
+	return subCfg
 }
 
 func NewBoiler() Boilerplate {
-	return Boilerplate{}
+	return Boilerplate{
+		SubConfig: pubsub.SubscriptionConfig{
+			Topic: nil,
+			RetryPolicy: &pubsub.RetryPolicy{
+				MinimumBackoff: 1 * time.Second,
+				MaximumBackoff: 60 * time.Second,
+			},
+			AckDeadline: 30 * time.Second,
+		},
+	}
 }

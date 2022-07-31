@@ -2,11 +2,10 @@ package psub
 
 import (
 	"context"
-	"errors"
-	"log"
 	"time"
 
 	"cloud.google.com/go/pubsub"
+	"github.com/func25/gop"
 )
 
 type MsgHandler func(context.Context, *pubsub.Message) error
@@ -40,10 +39,12 @@ func (c *PsubClient) UpsertSubscriptions(ctx context.Context, cmd UpsertSubsComm
 
 // Subscribe to the subscription
 func (c *PsubClient) Subscribe(subID string, fn MsgHandler, opts ...*SubscribeOption) error {
-	if _, exist := c._subscribers[subID]; exist {
-		return errors.New("cannot subscribe 1 subscription twice")
+	clone, err := c.newClientFunc()
+	if err != nil {
+		return err
 	}
-	sub := c.Subscription(subID)
+
+	sub := clone.Subscription(subID)
 
 	ctx, cancel := context.WithCancel(context.Background())
 
@@ -56,21 +57,13 @@ func (c *PsubClient) Subscribe(subID string, fn MsgHandler, opts ...*SubscribeOp
 		cfg:        opt,
 	}
 
-	go c.subscribe(ctx, subscriber, fn)
+	go gop.SafeGo(func() { newClient(clone).subscribe(ctx, subscriber, fn) })
 
 	return nil
 }
 
 func (c *PsubClient) subscribe(ctx context.Context, subscriber *Subscriber, fn MsgHandler) error {
 	id := subscriber.ID
-	c.setSubcriber(subscriber.Sub.ID(), subscriber)
-
-	defer func() {
-		c.removeSubcribers(id)
-		if c := recover(); c != nil {
-			log.Println(c)
-		}
-	}()
 
 	var err error = nil
 	retry := false
@@ -81,6 +74,7 @@ func (c *PsubClient) subscribe(ctx context.Context, subscriber *Subscriber, fn M
 	if subscriber.cfg.ACKErr != nil {
 		ackErr = *subscriber.cfg.ACKErr
 	}
+
 	for ok := true; ok; {
 		c.Log("[PSUB-debug] start pulling", id)
 		err = subscriber.Sub.Receive(ctx, func(ctx context.Context, msg *pubsub.Message) {

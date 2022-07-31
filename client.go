@@ -3,7 +3,6 @@ package psub
 import (
 	"context"
 	"fmt"
-	"sync"
 
 	"cloud.google.com/go/pubsub"
 	"google.golang.org/api/option"
@@ -11,10 +10,10 @@ import (
 
 type PsubClient struct {
 	*pubsub.Client
-	mtx          sync.Mutex
-	_subscribers map[string]*Subscriber
-	topics       map[string]*pubsub.Topic
-	isLog        bool
+	topics map[string]*pubsub.Topic // topics that have custom publishSetting
+	isLog  bool
+
+	newClientFunc func() (*pubsub.Client, error)
 }
 
 type Subscriber struct {
@@ -24,35 +23,47 @@ type Subscriber struct {
 	cfg        *SubscribeOption
 }
 
-var Client *PsubClient
+var Client *PsubClient // for singleton usage
 
 func Connect(ctx context.Context, projectID string, opts ...option.ClientOption) (*PsubClient, error) {
 	var err error
-	c, err := pubsub.NewClient(ctx, projectID, opts...)
+
+	f := func() (*pubsub.Client, error) { return pubsub.NewClient(ctx, projectID, opts...) }
+
+	c, err := f()
 	if err != nil {
 		return nil, err
 	}
 
 	if Client == nil {
-		Client = &PsubClient{Client: c}
+		Client = &PsubClient{
+			Client:        c,
+			newClientFunc: f,
+		}
 	}
 
 	return &PsubClient{
-		Client:       c,
-		_subscribers: make(map[string]*Subscriber),
-		topics:       make(map[string]*pubsub.Topic),
+		Client:        c,
+		topics:        make(map[string]*pubsub.Topic),
+		newClientFunc: f,
 	}, nil
 }
 
 func ForceClient(client *pubsub.Client) *PsubClient {
-	newClient := &PsubClient{
-		Client:       client,
-		_subscribers: make(map[string]*Subscriber),
-		topics:       make(map[string]*pubsub.Topic),
-	}
+	newClient := newClient(client)
 	if Client == nil {
 		Client = newClient
 	}
+
+	return newClient
+}
+
+func newClient(client *pubsub.Client) *PsubClient {
+	newClient := &PsubClient{
+		Client: client,
+		topics: make(map[string]*pubsub.Topic),
+	}
+
 	return newClient
 }
 
@@ -64,18 +75,4 @@ func (c *PsubClient) Log(a ...any) {
 	if c.isLog {
 		fmt.Println(a...)
 	}
-}
-
-func (c *PsubClient) setSubcriber(subID string, s *Subscriber) {
-	c.mtx.Lock()
-	defer c.mtx.Unlock()
-
-	c._subscribers[subID] = s
-}
-
-func (c *PsubClient) removeSubcribers(subID string) {
-	c.mtx.Lock()
-	defer c.mtx.Unlock()
-
-	delete(c._subscribers, subID)
 }

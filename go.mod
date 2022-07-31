@@ -4,6 +4,7 @@ go 1.18
 
 require (
 	cloud.google.com/go/pubsub v1.23.1
+	github.com/func25/gop v0.0.0-20220731034914-929c8cec36a1
 	google.golang.org/api v0.86.0
 )
 
@@ -11,6 +12,9 @@ require (
 	cloud.google.com/go v0.102.1 // indirect
 	cloud.google.com/go/compute v1.7.0 // indirect
 	cloud.google.com/go/iam v0.3.0 // indirect
+	github.com/func25/mafu v1.0.4 // indirect
+	github.com/func25/mathfunc v1.1.0 // indirect
+	github.com/func25/slicesol v1.0.10 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/go-cmp v0.5.8 // indirect

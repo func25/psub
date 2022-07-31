@@ -95,6 +95,14 @@ github.com/envoyproxy/go-control-plane v0.9.9-0.20210512163311-63b5d3c536b0/go.m
 github.com/envoyproxy/go-control-plane v0.9.10-0.20210907150352-cf90f659a021/go.mod h1:AFq3mo9L8Lqqiid3OhADV3RfLJnjiw63cSpi+fDTRC0=
 github.com/envoyproxy/go-control-plane v0.10.2-0.20220325020618-49ff273808a1/go.mod h1:KJwIaB5Mv44NWtYuAOFCVOjcI94vtpEz2JU/D2v6IjE=
 github.com/envoyproxy/protoc-gen-validate v0.1.0/go.mod h1:iSmxcyjqTsJpI2R4NaDN7+kN2VEUnK/pcBlmesArF7c=
+github.com/func25/gop v0.0.0-20220731034914-929c8cec36a1 h1:gTTpw2t3G7Uk2pZzrR3ZZbd88pG1L78mvtuWIaPTlpE=
+github.com/func25/gop v0.0.0-20220731034914-929c8cec36a1/go.mod h1:rtVcwm1iV0tUuJg32k1ecFxRCBTwpPl04G70n7ppfTM=
+github.com/func25/mafu v1.0.4 h1:knitUSltvFmfMfC8ap488vy+RPjZJkAnHXdrTgc3y8k=
+github.com/func25/mafu v1.0.4/go.mod h1:xbjXG5HbTTjVkDSYXY7KnnyqlTzRO8SroqiLWMJwHEY=
+github.com/func25/mathfunc v1.1.0 h1:GGfSIePbvozaH1oTET1KtrcqbfG0Qs2yCB6qgerUIys=
+github.com/func25/mathfunc v1.1.0/go.mod h1:VadYd75jsFrxopmeHqylPLZBD6A6n+l3A8z64dIGYA8=
+github.com/func25/slicesol v1.0.10 h1:cCXHy9/OnXJ4J23J6hmmtVM3sKgD7CgIEIS2FGFUZHw=
+github.com/func25/slicesol v1.0.10/go.mod h1:oy2dFLyvyrALv8rRMRFlbjuZlmhJ2VLzAM//3k5AiiM=
 github.com/ghodss/yaml v1.0.0/go.mod h1:4dBDuWmgqj2HViK6kFavaiC9ZROes6MMH2rRYeMEF04=
 github.com/go-gl/glfw v0.0.0-20190409004039-e6da0acd62b1/go.mod h1:vR7hzQXu2zJy9AVAgeJqvqgH9Q5CA+iKCZ2gyEVpxRU=
 github.com/go-gl/glfw/v3.3/glfw v0.0.0-20191125211704-12ad95a8df72/go.mod h1:tQ2UAYgL5IevRw8kRxooKSPJfGvJ9fJQFa0TUsXzTg8=
