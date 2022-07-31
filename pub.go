@@ -7,11 +7,11 @@ import (
 )
 
 type UpsertSubsCommand struct {
-	Subs          []UpsertSub
+	Subs          []Sub
 	DefaultConfig pubsub.SubscriptionConfig
 }
 
-type UpsertSub struct {
+type Sub struct {
 	ID     string
 	Config *pubsub.SubscriptionConfig
 }

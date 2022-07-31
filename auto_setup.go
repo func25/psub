@@ -8,12 +8,12 @@ import (
 	"google.golang.org/api/iterator"
 )
 
-type Pubsub struct {
+type UpsertCmd struct {
 	TopicID    string
 	UpsertSubs UpsertSubsCommand
 }
 
-func (c *PsubClient) UpsertMany(ctx context.Context, psubs []Pubsub) error {
+func (c *PsubClient) UpsertMany(ctx context.Context, psubs []UpsertCmd) error {
 	topics := map[string]*pubsub.Topic{}
 
 	// collect all topics
@@ -94,16 +94,16 @@ func (c *PsubClient) UpsertMany(ctx context.Context, psubs []Pubsub) error {
 	return nil
 }
 
-func (c *PsubClient) Upsert(ctx context.Context, topicID string, subIDs []string) error {
-	topic, err := c.UpsertTopic(ctx, topicID)
+func (c *PsubClient) Upsert(ctx context.Context, cmd UpsertCmd) error {
+	topic, err := c.UpsertTopic(ctx, cmd.TopicID)
 	if err != nil {
 		return err
 	}
 
-	upsertSubs := make([]UpsertSub, len(subIDs))
-	for i := range subIDs {
-		upsertSubs[i] = UpsertSub{
-			ID: subIDs[i],
+	upsertSubs := make([]Sub, len(cmd.UpsertSubs.Subs))
+	for i := range cmd.UpsertSubs.Subs {
+		upsertSubs[i] = Sub{
+			ID: cmd.UpsertSubs.Subs[i].ID,
 		}
 	}
 
