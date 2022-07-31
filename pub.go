@@ -6,7 +6,7 @@ import (
 	"cloud.google.com/go/pubsub"
 )
 
-type UpsertSubsCommand struct {
+type SubsInfo struct {
 	Subs          []Sub
 	DefaultConfig pubsub.SubscriptionConfig
 }

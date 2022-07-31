@@ -10,7 +10,7 @@ import (
 
 type MsgHandler func(context.Context, *pubsub.Message) error
 
-func (c *PsubClient) UpsertSubscriptions(ctx context.Context, cmd UpsertSubsCommand) error {
+func (c *PsubClient) UpsertSubscriptions(ctx context.Context, cmd SubsInfo) error {
 	for _, sub := range cmd.Subs {
 		subscription := c.Subscription(sub.ID)
 

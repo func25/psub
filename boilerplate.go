@@ -8,17 +8,19 @@ import (
 
 type Boilerplate struct {
 	SubConfig pubsub.SubscriptionConfig
+	client    *pubsub.Client
 }
 
-func (b Boilerplate) SubscriptionConfig(topic *pubsub.Topic) pubsub.SubscriptionConfig {
+func (b Boilerplate) SubscriptionConfig(topicID string) pubsub.SubscriptionConfig {
 	subCfg := b.SubConfig
-	subCfg.Topic = topic
+	subCfg.Topic = b.client.Topic(topicID)
 
 	return subCfg
 }
 
-func NewBoiler() Boilerplate {
+func NewBoiler(c *pubsub.Client) Boilerplate {
 	return Boilerplate{
+		client: c,
 		SubConfig: pubsub.SubscriptionConfig{
 			Topic: nil,
 			RetryPolicy: &pubsub.RetryPolicy{

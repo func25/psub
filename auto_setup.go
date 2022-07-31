@@ -10,7 +10,7 @@ import (
 
 type UpsertCmd struct {
 	TopicID    string
-	UpsertSubs UpsertSubsCommand
+	UpsertSubs SubsInfo
 }
 
 func (c *PsubClient) UpsertMany(ctx context.Context, psubs []UpsertCmd) error {
@@ -62,7 +62,7 @@ func (c *PsubClient) UpsertMany(ctx context.Context, psubs []UpsertCmd) error {
 			}
 
 			// filter un-existed subs
-			cmd := UpsertSubsCommand{DefaultConfig: elem.UpsertSubs.DefaultConfig}
+			cmd := SubsInfo{DefaultConfig: elem.UpsertSubs.DefaultConfig}
 			for _, v := range elem.UpsertSubs.Subs {
 				if _, ok := subs[v.ID]; !ok {
 					cmd.Subs = append(cmd.Subs, v)
@@ -107,8 +107,8 @@ func (c *PsubClient) Upsert(ctx context.Context, cmd UpsertCmd) error {
 		}
 	}
 
-	return c.UpsertSubscriptions(ctx, UpsertSubsCommand{
-		DefaultConfig: NewBoiler().SubscriptionConfig(topic),
+	return c.UpsertSubscriptions(ctx, SubsInfo{
+		DefaultConfig: NewBoiler(c.Client).SubscriptionConfig(topic.ID()),
 		Subs:          upsertSubs,
 	})
 }

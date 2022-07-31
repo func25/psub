@@ -23,7 +23,7 @@ type Subscriber struct {
 	cfg        *SubscribeOption
 }
 
-var Client *PsubClient // for singleton usage
+var Worker *PsubClient // for singleton usage
 
 func Connect(ctx context.Context, projectID string, opts ...option.ClientOption) (*PsubClient, error) {
 	var err error
@@ -35,8 +35,8 @@ func Connect(ctx context.Context, projectID string, opts ...option.ClientOption)
 		return nil, err
 	}
 
-	if Client == nil {
-		Client = &PsubClient{
+	if Worker == nil {
+		Worker = &PsubClient{
 			Client:        c,
 			newClientFunc: f,
 		}
@@ -51,8 +51,8 @@ func Connect(ctx context.Context, projectID string, opts ...option.ClientOption)
 
 func ForceClient(client *pubsub.Client) *PsubClient {
 	newClient := newClient(client)
-	if Client == nil {
-		Client = newClient
+	if Worker == nil {
+		Worker = newClient
 	}
 
 	return newClient
