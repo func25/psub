@@ -97,6 +97,8 @@ github.com/envoyproxy/go-control-plane v0.10.2-0.20220325020618-49ff273808a1/go.
 github.com/envoyproxy/protoc-gen-validate v0.1.0/go.mod h1:iSmxcyjqTsJpI2R4NaDN7+kN2VEUnK/pcBlmesArF7c=
 github.com/func25/gop v0.0.0-20220731034914-929c8cec36a1 h1:gTTpw2t3G7Uk2pZzrR3ZZbd88pG1L78mvtuWIaPTlpE=
 github.com/func25/gop v0.0.0-20220731034914-929c8cec36a1/go.mod h1:rtVcwm1iV0tUuJg32k1ecFxRCBTwpPl04G70n7ppfTM=
+github.com/func25/gop v0.0.0-20220801132147-967f2395b51a h1:ozdKT6gSFtHht+R2LakV5Uzl8jloUFaLQjmM742ipdI=
+github.com/func25/gop v0.0.0-20220801132147-967f2395b51a/go.mod h1:rtVcwm1iV0tUuJg32k1ecFxRCBTwpPl04G70n7ppfTM=
 github.com/func25/mafu v1.0.4 h1:knitUSltvFmfMfC8ap488vy+RPjZJkAnHXdrTgc3y8k=
 github.com/func25/mafu v1.0.4/go.mod h1:xbjXG5HbTTjVkDSYXY7KnnyqlTzRO8SroqiLWMJwHEY=
 github.com/func25/mathfunc v1.1.0 h1:GGfSIePbvozaH1oTET1KtrcqbfG0Qs2yCB6qgerUIys=

@@ -4,7 +4,7 @@ go 1.18
 
 require (
 	cloud.google.com/go/pubsub v1.23.1
-	github.com/func25/gop v0.0.0-20220731034914-929c8cec36a1
+	github.com/func25/gop v0.0.0-20220801132147-967f2395b51a
 	google.golang.org/api v0.86.0
 )
 
