@@ -99,6 +99,8 @@ github.com/func25/gop v0.0.0-20220731034914-929c8cec36a1 h1:gTTpw2t3G7Uk2pZzrR3Z
 github.com/func25/gop v0.0.0-20220731034914-929c8cec36a1/go.mod h1:rtVcwm1iV0tUuJg32k1ecFxRCBTwpPl04G70n7ppfTM=
 github.com/func25/gop v0.0.0-20220801132147-967f2395b51a h1:ozdKT6gSFtHht+R2LakV5Uzl8jloUFaLQjmM742ipdI=
 github.com/func25/gop v0.0.0-20220801132147-967f2395b51a/go.mod h1:rtVcwm1iV0tUuJg32k1ecFxRCBTwpPl04G70n7ppfTM=
+github.com/func25/gop v0.0.0-20220801133524-acf1cd3b23e3 h1:1EfP7KGsbDBTk27pKA3u46le1I09uJjJLu1p0sYbhkw=
+github.com/func25/gop v0.0.0-20220801133524-acf1cd3b23e3/go.mod h1:rtVcwm1iV0tUuJg32k1ecFxRCBTwpPl04G70n7ppfTM=
 github.com/func25/mafu v1.0.4 h1:knitUSltvFmfMfC8ap488vy+RPjZJkAnHXdrTgc3y8k=
 github.com/func25/mafu v1.0.4/go.mod h1:xbjXG5HbTTjVkDSYXY7KnnyqlTzRO8SroqiLWMJwHEY=
 github.com/func25/mathfunc v1.1.0 h1:GGfSIePbvozaH1oTET1KtrcqbfG0Qs2yCB6qgerUIys=
