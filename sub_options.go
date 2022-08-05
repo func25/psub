@@ -2,11 +2,14 @@ package psub
 
 type SubscribeOption struct {
 	ACKErr         *bool
-	RetrySubscribe *bool
+	RetrySubscribe *bool // default: true
 }
 
 func NewSubscribeOption() *SubscribeOption {
-	return &SubscribeOption{}
+	retry := true
+	return &SubscribeOption{
+		RetrySubscribe: &retry,
+	}
 }
 
 func (s *SubscribeOption) ACKAll(ack bool) *SubscribeOption {
@@ -20,7 +23,7 @@ func (s *SubscribeOption) Retry(retry bool) *SubscribeOption {
 }
 
 func mergeSubscribeOption(opts ...*SubscribeOption) *SubscribeOption {
-	opt := &SubscribeOption{}
+	opt := NewSubscribeOption()
 	for i := range opts {
 		if opts[i].ACKErr != nil {
 			opt.ACKErr = opts[i].ACKErr

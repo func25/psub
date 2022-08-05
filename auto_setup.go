@@ -13,7 +13,7 @@ type UpsertCmd struct {
 	UpsertSubs SubsInfo
 }
 
-func (c *PsubClient) UpsertMany(ctx context.Context, psubs []UpsertCmd) error {
+func (c *PsubConnection) UpsertMany(ctx context.Context, psubs []UpsertCmd) error {
 	topics := map[string]*pubsub.Topic{}
 
 	// collect all topics
@@ -71,7 +71,7 @@ func (c *PsubClient) UpsertMany(ctx context.Context, psubs []UpsertCmd) error {
 
 			// if all subs are existed, then stop upsert subscriptions
 			if len(cmd.Subs) == 0 {
-				return err
+				return nil
 			}
 
 			// set default topic for subscription
@@ -94,7 +94,7 @@ func (c *PsubClient) UpsertMany(ctx context.Context, psubs []UpsertCmd) error {
 	return nil
 }
 
-func (c *PsubClient) Upsert(ctx context.Context, cmd UpsertCmd) error {
+func (c *PsubConnection) Upsert(ctx context.Context, cmd UpsertCmd) error {
 	topic, err := c.UpsertTopic(ctx, cmd.TopicID)
 	if err != nil {
 		return err

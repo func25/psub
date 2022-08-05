@@ -16,7 +16,7 @@ type Sub struct {
 	Config *pubsub.SubscriptionConfig
 }
 
-func (c *PsubClient) UpsertTopic(ctx context.Context, topicID string) (*pubsub.Topic, error) {
+func (c *PsubConnection) UpsertTopic(ctx context.Context, topicID string) (*pubsub.Topic, error) {
 	topic := c.Topic(topicID)
 
 	exist, err := topic.Exists(ctx)
@@ -33,7 +33,7 @@ func (c *PsubClient) UpsertTopic(ctx context.Context, topicID string) (*pubsub.T
 	return topic, nil
 }
 
-func (c *PsubClient) SettingTopic(ctx context.Context, topicID string, setting pubsub.PublishSettings) {
+func (c *PsubConnection) SettingTopic(ctx context.Context, topicID string, setting pubsub.PublishSettings) {
 	v, exists := c.topics[topicID]
 	if exists {
 		v.PublishSettings = setting
@@ -45,7 +45,7 @@ func (c *PsubClient) SettingTopic(ctx context.Context, topicID string, setting p
 	c.topics[topicID] = topic
 }
 
-func (c *PsubClient) PublishRaw(ctx context.Context, topicID string, data []byte) error {
+func (c *PsubConnection) PublishRaw(ctx context.Context, topicID string, data []byte) error {
 	if data == nil {
 		c.Log("[PSUB-debug] Publish topic", topicID, "failed: data is nil")
 		return nil
@@ -70,7 +70,7 @@ func (c *PsubClient) PublishRaw(ctx context.Context, topicID string, data []byte
 	return nil
 }
 
-func (c *PsubClient) Publish(ctx context.Context, topicID string, message Message) error {
+func (c *PsubConnection) Publish(ctx context.Context, topicID string, message Message) error {
 	if message.Data == nil {
 		c.Log("[PSUB-debug] Publish topic", topicID, "failed: data is nil")
 		return nil

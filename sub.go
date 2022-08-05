@@ -10,7 +10,7 @@ import (
 
 type MsgHandler func(context.Context, *pubsub.Message) error
 
-func (c *PsubClient) UpsertSubscriptions(ctx context.Context, cmd SubsInfo) error {
+func (c *PsubConnection) UpsertSubscriptions(ctx context.Context, cmd SubsInfo) error {
 	for _, sub := range cmd.Subs {
 		subscription := c.Subscription(sub.ID)
 
@@ -38,7 +38,7 @@ func (c *PsubClient) UpsertSubscriptions(ctx context.Context, cmd SubsInfo) erro
 }
 
 // Subscribe to the subscription
-func (c *PsubClient) Subscribe(subID string, fn MsgHandler, opts ...*SubscribeOption) error {
+func (c *PsubConnection) Subscribe(subID string, fn MsgHandler, opts ...*SubscribeOption) error {
 	clone, err := c.newClientFunc()
 	if err != nil {
 		return err
@@ -62,7 +62,7 @@ func (c *PsubClient) Subscribe(subID string, fn MsgHandler, opts ...*SubscribeOp
 	return nil
 }
 
-func (c *PsubClient) subscribe(ctx context.Context, subscriber *Subscriber, fn MsgHandler) error {
+func (c *PsubConnection) subscribe(ctx context.Context, subscriber *Subscriber, fn MsgHandler) error {
 	id := subscriber.ID
 
 	var err error = nil

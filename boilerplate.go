@@ -61,5 +61,4 @@ func boilerUpsertCmd(b *boilerplate) func(topicID string, subIDs []string) Upser
 			UpsertSubs: b.SubInfo(topicID, subIDs),
 		}
 	}
-
 }

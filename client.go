@@ -8,9 +8,10 @@ import (
 	"google.golang.org/api/option"
 )
 
-type PsubClient struct {
+type PsubConnection struct {
 	*pubsub.Client
-	topics map[string]*pubsub.Topic // topics that have custom publishSetting
+	topics map[string]*pubsub.Topic        // topics that have custom publishSetting
+	subs   map[string]*pubsub.Subscription // subscriptions that have custom receiveSetting
 	isLog  bool
 
 	newClientFunc func() (*pubsub.Client, error)
@@ -23,9 +24,9 @@ type Subscriber struct {
 	cfg        *SubscribeOption
 }
 
-var Worker *PsubClient // for singleton usage
+var Connection *PsubConnection // for singleton usage
 
-func Connect(ctx context.Context, projectID string, opts ...option.ClientOption) (*PsubClient, error) {
+func Connect(ctx context.Context, projectID string, opts ...option.ClientOption) (*PsubConnection, error) {
 	var err error
 
 	f := func() (*pubsub.Client, error) { return pubsub.NewClient(ctx, projectID, opts...) }
@@ -35,31 +36,22 @@ func Connect(ctx context.Context, projectID string, opts ...option.ClientOption)
 		return nil, err
 	}
 
-	if Worker == nil {
-		Worker = &PsubClient{
+	if Connection == nil {
+		Connection = &PsubConnection{
 			Client:        c,
 			newClientFunc: f,
 		}
 	}
 
-	return &PsubClient{
+	return &PsubConnection{
 		Client:        c,
 		topics:        make(map[string]*pubsub.Topic),
 		newClientFunc: f,
 	}, nil
 }
 
-func ForceClient(client *pubsub.Client) *PsubClient {
-	newClient := newClient(client)
-	if Worker == nil {
-		Worker = newClient
-	}
-
-	return newClient
-}
-
-func newClient(client *pubsub.Client) *PsubClient {
-	newClient := &PsubClient{
+func newClient(client *pubsub.Client) *PsubConnection {
+	newClient := &PsubConnection{
 		Client: client,
 		topics: make(map[string]*pubsub.Topic),
 	}
@@ -67,11 +59,11 @@ func newClient(client *pubsub.Client) *PsubClient {
 	return newClient
 }
 
-func (c *PsubClient) SetLog(isLog bool) {
+func (c *PsubConnection) SetLog(isLog bool) {
 	c.isLog = isLog
 }
 
-func (c *PsubClient) Log(a ...any) {
+func (c *PsubConnection) Log(a ...any) {
 	if c.isLog {
 		fmt.Println(a...)
 	}
