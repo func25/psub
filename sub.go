@@ -91,6 +91,8 @@ func (c *PsubConnection) subscribe(ctx context.Context, subscriber *Subscriber, 
 
 			if err == nil {
 				err = fn(ctx, msg)
+			} else {
+				c.Log("[PSUB-error] error while deduplicating", id, err)
 			}
 
 			if err == nil || (err != nil && ackErr) {
@@ -101,7 +103,7 @@ func (c *PsubConnection) subscribe(ctx context.Context, subscriber *Subscriber, 
 			msg.Nack()
 		})
 
-		c.Log("[PSUB-debug] error while pulling message of", id, " - ", err)
+		c.Log("[PSUB-error] error while pulling message of", id, " - ", err)
 		ok = retry
 		time.Sleep(1 * time.Second)
 	}
