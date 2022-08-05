@@ -1,8 +1,15 @@
 package psub
 
+import (
+	"context"
+
+	"cloud.google.com/go/pubsub"
+)
+
 type SubscribeOption struct {
-	ACKErr         *bool
-	RetrySubscribe *bool // default: true
+	ACKErr          *bool
+	RetrySubscribe  *bool                                                // default: true
+	DeduplicateFunc func(context.Context, *pubsub.Message) (bool, error) // return true if message duplicated
 }
 
 func NewSubscribeOption() *SubscribeOption {
@@ -12,14 +19,18 @@ func NewSubscribeOption() *SubscribeOption {
 	}
 }
 
-func (s *SubscribeOption) ACKAll(ack bool) *SubscribeOption {
+func (s *SubscribeOption) SetACKAll(ack bool) *SubscribeOption {
 	s.ACKErr = &ack
 	return s
 }
 
-func (s *SubscribeOption) Retry(retry bool) *SubscribeOption {
+func (s *SubscribeOption) SetRetry(retry bool) *SubscribeOption {
 	s.RetrySubscribe = &retry
 	return s
+}
+
+func (s *SubscribeOption) SetDeduplicate(isDuplicateFunc func(context.Context, *pubsub.Message) (bool, error)) {
+	s.DeduplicateFunc = isDuplicateFunc
 }
 
 func mergeSubscribeOption(opts ...*SubscribeOption) *SubscribeOption {
@@ -31,6 +42,10 @@ func mergeSubscribeOption(opts ...*SubscribeOption) *SubscribeOption {
 
 		if opts[i].RetrySubscribe != nil {
 			opt.RetrySubscribe = opts[i].RetrySubscribe
+		}
+
+		if opts[i].DeduplicateFunc != nil {
+			opt.DeduplicateFunc = opts[i].DeduplicateFunc
 		}
 	}
 
