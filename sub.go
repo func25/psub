@@ -80,15 +80,12 @@ func (c *PsubConnection) subscribe(ctx context.Context, subscriber *Subscriber, 
 		err = subscriber.Sub.Receive(ctx, func(ctx context.Context, msg *pubsub.Message) {
 			err := fn(ctx, msg)
 
-			if err != nil {
-				if ackErr {
-					msg.Ack()
-				} else {
-					msg.Nack()
-				}
-			} else {
+			if err == nil || (err != nil && ackErr) {
 				msg.Ack()
+				return
 			}
+
+			msg.Nack()
 		})
 
 		c.Log("[PSUB-debug] error while pulling message of", id, " - ", err)
