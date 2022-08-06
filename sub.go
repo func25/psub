@@ -84,6 +84,7 @@ func (c *PsubConnection) subscribe(ctx context.Context, subscriber *Subscriber, 
 				var isDup bool
 				isDup, err = dedup(ctx, msg)
 				if isDup {
+					c.Log("[PSUB-info] duplicating message of", id, err)
 					msg.Ack()
 					return
 				}

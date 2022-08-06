@@ -61,6 +61,14 @@ func mergeSubscribeOption(opts ...*SubscribeOption) *SubscribeOption {
 		if opts[i].DeduplicateFunc != nil {
 			opt.DeduplicateFunc = opts[i].DeduplicateFunc
 		}
+
+		if opts[i].ACKHook != nil {
+			opt.ACKHook = opts[i].ACKHook
+		}
+
+		if opts[i].NACKHook != nil {
+			opt.NACKHook = opts[i].NACKHook
+		}
 	}
 
 	return opt
