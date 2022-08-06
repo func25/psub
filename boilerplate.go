@@ -38,7 +38,7 @@ func boilerSubConfig(b *boilerplate) func(topicID string) pubsub.SubscriptionCon
 			Topic: b.client.Topic(topicID),
 			RetryPolicy: &pubsub.RetryPolicy{
 				MinimumBackoff: 1 * time.Second,
-				MaximumBackoff: 20 * time.Second,
+				MaximumBackoff: 10 * time.Second,
 			},
 			AckDeadline: 30 * time.Second,
 		}
