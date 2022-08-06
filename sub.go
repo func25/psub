@@ -97,6 +97,9 @@ func (c *PsubConnection) subscribe(ctx context.Context, subscriber *Subscriber, 
 
 			if err == nil || (err != nil && ackErr) {
 				msg.Ack()
+				if subscriber.cfg.ACKHook != nil {
+					subscriber.cfg.ACKHook(msg)
+				}
 				return
 			}
 
