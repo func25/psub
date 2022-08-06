@@ -38,15 +38,15 @@ func (c *PsubConnection) UpsertSubscriptions(ctx context.Context, cmd SubsInfo) 
 }
 
 // Subscribe to the subscription
-func (c *PsubConnection) Subscribe(subID string, fn MsgHandler, opts ...*SubscribeOption) error {
+func (c *PsubConnection) Subscribe(ctx context.Context, subID string, fn MsgHandler, opts ...*SubscribeOption) (*Subscriber, error) {
 	clone, err := c.newClientFunc()
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	sub := clone.Subscription(subID)
 
-	ctx, cancel := context.WithCancel(context.Background())
+	ctx, cancel := context.WithCancel(ctx)
 
 	// apply options
 	opt := mergeSubscribeOption(opts...)
@@ -59,7 +59,7 @@ func (c *PsubConnection) Subscribe(subID string, fn MsgHandler, opts ...*Subscri
 
 	go gop.SafeGo(func() { newClient(clone).subscribe(ctx, subscriber, fn) })
 
-	return nil
+	return subscriber, nil
 }
 
 func (c *PsubConnection) subscribe(ctx context.Context, subscriber *Subscriber, fn MsgHandler) error {
