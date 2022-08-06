@@ -31,17 +31,20 @@ func (s *SubscribeOption) SetRetry(retry bool) *SubscribeOption {
 	return s
 }
 
-func (s *SubscribeOption) SetDeduplicate(isDuplicateFunc func(context.Context, *pubsub.Message) (bool, error)) {
+func (s *SubscribeOption) SetDeduplicate(isDuplicateFunc func(context.Context, *pubsub.Message) (bool, error)) *SubscribeOption {
 	s.DeduplicateFunc = isDuplicateFunc
+	return s
 }
 
 // SetACKHook not apply for deduplicate ack()
-func (s *SubscribeOption) SetACKHook(f func(*pubsub.Message)) {
+func (s *SubscribeOption) SetACKHook(f func(*pubsub.Message)) *SubscribeOption {
 	s.ACKHook = f
+	return s
 }
 
-func (s *SubscribeOption) SetNACKHook(f func(*pubsub.Message)) {
+func (s *SubscribeOption) SetNACKHook(f func(*pubsub.Message)) *SubscribeOption {
 	s.NACKHook = f
+	return s
 }
 
 func mergeSubscribeOption(opts ...*SubscribeOption) *SubscribeOption {

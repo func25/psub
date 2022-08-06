@@ -104,6 +104,9 @@ func (c *PsubConnection) subscribe(ctx context.Context, subscriber *Subscriber, 
 			}
 
 			msg.Nack()
+			if subscriber.cfg.NACKHook != nil {
+				subscriber.cfg.NACKHook(msg)
+			}
 		})
 
 		c.Log("[PSUB-error] error while pulling message of", id, " - ", err)
