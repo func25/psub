@@ -10,8 +10,7 @@ import (
 
 type PsubConnection struct {
 	*pubsub.Client
-	topics map[string]*pubsub.Topic        // topics that have custom publishSetting
-	subs   map[string]*pubsub.Subscription // subscriptions that have custom receiveSetting
+	topics map[string]*pubsub.Topic // topics that have custom publishSetting
 	isLog  bool
 
 	newClientFunc func() (*pubsub.Client, error)

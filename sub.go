@@ -51,6 +51,10 @@ func (c *PsubConnection) Subscribe(ctx context.Context, subID string, fn MsgHand
 	// apply options
 	opt := mergeSubscribeOption(opts...)
 
+	if opt.ReceiveSettings != nil {
+		sub.ReceiveSettings = *opt.ReceiveSettings
+	}
+
 	subscriber := &Subscriber{
 		Sub:        sub,
 		CancelFunc: cancel,

@@ -12,6 +12,7 @@ type SubscribeOption struct {
 	DeduplicateFunc func(context.Context, *pubsub.Message) (bool, error) // return true if message duplicated
 	ACKHook         func(*pubsub.Message)
 	NACKHook        func(*pubsub.Message)
+	ReceiveSettings *pubsub.ReceiveSettings
 }
 
 func NewSubscribeOption() *SubscribeOption {
@@ -47,6 +48,11 @@ func (s *SubscribeOption) SetNACKHook(f func(*pubsub.Message)) *SubscribeOption 
 	return s
 }
 
+func (s *SubscribeOption) SetReceiveSettings(settings pubsub.ReceiveSettings) *SubscribeOption {
+	s.ReceiveSettings = &settings
+	return s
+}
+
 func mergeSubscribeOption(opts ...*SubscribeOption) *SubscribeOption {
 	opt := NewSubscribeOption()
 	for i := range opts {
@@ -68,6 +74,10 @@ func mergeSubscribeOption(opts ...*SubscribeOption) *SubscribeOption {
 
 		if opts[i].NACKHook != nil {
 			opt.NACKHook = opts[i].NACKHook
+		}
+
+		if opts[i].ReceiveSettings != nil {
+			opt.ReceiveSettings = opts[i].ReceiveSettings
 		}
 	}
 

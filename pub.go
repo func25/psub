@@ -35,14 +35,13 @@ func (c *PsubConnection) UpsertTopic(ctx context.Context, topicID string) (*pubs
 
 func (c *PsubConnection) SettingTopic(ctx context.Context, topicID string, setting pubsub.PublishSettings) {
 	v, exists := c.topics[topicID]
-	if exists {
-		v.PublishSettings = setting
+	if !exists {
+		v = c.Topic(topicID)
 	}
 
-	topic := c.Topic(topicID)
-	topic.PublishSettings = setting
+	v.PublishSettings = setting
 
-	c.topics[topicID] = topic
+	c.topics[topicID] = v
 }
 
 func (c *PsubConnection) PublishRaw(ctx context.Context, topicID string, data []byte) error {
