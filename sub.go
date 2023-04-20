@@ -61,7 +61,7 @@ func (c *PsubConnection) Subscribe(ctx context.Context, subID string, fn MsgHand
 		cfg:        opt,
 	}
 
-	go gop.SafeGo(func() { newClient(clone, c.isLog).subscribe(ctx, subscriber, fn) })
+	go gop.SafeGo(func() { newClient(clone).subscribe(ctx, subscriber, fn) })
 
 	return subscriber, nil
 }
@@ -72,12 +72,17 @@ func (c *PsubConnection) subscribe(ctx context.Context, subscriber *Subscriber, 
 	var err error = nil
 	retry := false
 	ackErr := false
+	isLog := false
 	if subscriber.cfg.RetrySubscribe != nil {
 		retry = *subscriber.cfg.RetrySubscribe
 	}
 	if subscriber.cfg.ACKErr != nil {
 		ackErr = *subscriber.cfg.ACKErr
 	}
+	if subscriber.cfg.IsLog != nil {
+		isLog = *subscriber.cfg.IsLog
+	}
+	c.SetLog(isLog)
 	dedup := subscriber.cfg.DeduplicateFunc
 
 	for ok := true; ok; {
