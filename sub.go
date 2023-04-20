@@ -72,13 +72,17 @@ func (c *PsubConnection) subscribe(ctx context.Context, subscriber *Subscriber, 
 	var err error = nil
 	retry := false
 	ackErr := false
+	isLog := false
 	if subscriber.cfg.RetrySubscribe != nil {
 		retry = *subscriber.cfg.RetrySubscribe
 	}
 	if subscriber.cfg.ACKErr != nil {
 		ackErr = *subscriber.cfg.ACKErr
 	}
-	c.SetLog(subscriber.cfg.IsLog)
+	if subscriber.cfg.IsLog != nil {
+		isLog = *subscriber.cfg.IsLog
+	}
+	c.SetLog(isLog)
 	dedup := subscriber.cfg.DeduplicateFunc
 
 	for ok := true; ok; {

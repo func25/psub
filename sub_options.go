@@ -9,7 +9,7 @@ import (
 type SubscribeOption struct {
 	ACKErr          *bool
 	RetrySubscribe  *bool                                                // default: true
-	IsLog           bool                                                 //default: false
+	IsLog           *bool                                                //default: false
 	DeduplicateFunc func(context.Context, *pubsub.Message) (bool, error) // return true if message duplicated
 	ACKHook         func(*pubsub.Message)
 	NACKHook        func(*pubsub.Message)
@@ -34,7 +34,7 @@ func (s *SubscribeOption) SetRetry(retry bool) *SubscribeOption {
 }
 
 func (s *SubscribeOption) SetIsLog(isLog bool) *SubscribeOption {
-	s.IsLog = isLog
+	s.IsLog = &isLog
 	return s
 }
 
@@ -68,6 +68,10 @@ func mergeSubscribeOption(opts ...*SubscribeOption) *SubscribeOption {
 
 		if opts[i].RetrySubscribe != nil {
 			opt.RetrySubscribe = opts[i].RetrySubscribe
+		}
+
+		if opts[i].IsLog != nil {
+			opt.IsLog = opts[i].IsLog
 		}
 
 		if opts[i].DeduplicateFunc != nil {
