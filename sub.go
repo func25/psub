@@ -78,6 +78,7 @@ func (c *PsubConnection) subscribe(ctx context.Context, subscriber *Subscriber, 
 	if subscriber.cfg.ACKErr != nil {
 		ackErr = *subscriber.cfg.ACKErr
 	}
+	c.SetLog(subscriber.cfg.IsLog)
 	dedup := subscriber.cfg.DeduplicateFunc
 
 	for ok := true; ok; {
