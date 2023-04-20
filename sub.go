@@ -61,7 +61,7 @@ func (c *PsubConnection) Subscribe(ctx context.Context, subID string, fn MsgHand
 		cfg:        opt,
 	}
 
-	go gop.SafeGo(func() { newClient(clone).subscribe(ctx, subscriber, fn) })
+	go gop.SafeGo(func() { newClient(clone, c.isLog).subscribe(ctx, subscriber, fn) })
 
 	return subscriber, nil
 }

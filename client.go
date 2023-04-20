@@ -49,10 +49,11 @@ func Connect(ctx context.Context, projectID string, opts ...option.ClientOption)
 	}, nil
 }
 
-func newClient(client *pubsub.Client) *PsubConnection {
+func newClient(client *pubsub.Client, isLog bool) *PsubConnection {
 	newClient := &PsubConnection{
 		Client: client,
 		topics: make(map[string]*pubsub.Topic),
+		isLog:  isLog,
 	}
 
 	return newClient
