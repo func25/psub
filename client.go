@@ -39,6 +39,7 @@ func Connect(ctx context.Context, projectID string, opts ...option.ClientOption)
 		Connection = &PsubConnection{
 			Client:        c,
 			newClientFunc: f,
+			topics:        make(map[string]*pubsub.Topic),
 		}
 	}
 
