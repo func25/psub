@@ -28,7 +28,7 @@ var Connection *PsubConnection // for singleton usage
 func Connect(ctx context.Context, projectID string, opts ...option.ClientOption) (*PsubConnection, error) {
 	var err error
 
-	f := func() (*pubsub.Client, error) { return pubsub.NewClient(ctx, projectID, opts...) }
+	f := func() (*pubsub.Client, error) { return pubsub.NewClient(context.Background(), projectID, opts...) }
 
 	c, err := f()
 	if err != nil {

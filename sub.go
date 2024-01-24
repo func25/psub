@@ -105,7 +105,7 @@ func (c *PsubConnection) subscribe(ctx context.Context, subscriber *Subscriber, 
 				c.Log("[PSUB-error] error while deduplicating", id, err)
 			}
 
-			if err == nil || (err != nil && ackErr) {
+			if err == nil || ackErr {
 				msg.Ack()
 				if subscriber.cfg.ACKHook != nil {
 					subscriber.cfg.ACKHook(msg)
